@@ -1,0 +1,52 @@
+{
+  "_comment": "Example OpenClaw cron schedule for Nujie. Replace the <PLACEHOLDERS> with real values from your Telegram bot setup. Drop into ~/.openclaw/cron/jobs.json and restart OpenClaw.",
+  "version": 1,
+  "jobs": [
+    {
+      "id": "<UUID_FOR_THIS_JOB>",
+      "agentId": "nujie",
+      "name": "nujie-weekday-morning",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1-4",
+        "tz": "Australia/Sydney"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Good morning. Check the HEARTBEAT.md and run your scheduled tasks for today."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "accountId": "<TELEGRAM_ACCOUNT_ID>",
+        "to": "<TELEGRAM_CHAT_ID>"
+      }
+    },
+    {
+      "id": "<UUID_FOR_THIS_JOB>",
+      "agentId": "nujie",
+      "name": "nujie-friday-calibration",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 16 * * 5",
+        "tz": "Australia/Sydney"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "It's Friday calibration time. Run the Friday calibration report."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "accountId": "<TELEGRAM_ACCOUNT_ID>",
+        "to": "<TELEGRAM_CHAT_ID>"
+      }
+    }
+  ]
+}
