@@ -196,6 +196,7 @@ officers manually updating status.
 nujie/
 │
 ├── README.md
+├── VISION.md
 │
 ├── setup/
 │   └── cron_jobs.example.json
@@ -213,8 +214,3 @@ nujie/
 
 ---
 
-## Status
-
-In testing. Open sourcing once stable.
-
-Full write-up: [coming soon]
