@@ -21,8 +21,9 @@ Nujie runs on three layers:
 **Database layer** — stores everything the system needs. Built in
 Notion, accessible via MCP.
 
-**Agentic layer** — runs on a fixed Mon/Wed/Fri schedule via
-OpenClaw. Reads the database, drafts actions, surfaces decisions.
+**Agentic layer** — runs on a fixed weekly schedule via OpenClaw:
+allocation on Monday, daily check-ins Tue–Thu, weekly report on
+Friday. Reads the database, drafts actions, surfaces decisions.
 
 **Human layer** — where all decisions live. The agent drafts.
 You confirm. Nothing reaches the team without sign-off.
@@ -76,7 +77,8 @@ Fields: Task · Assigned To · Status · Week · Due Date ·
 Officer Note · Last Updated · Submitted On Time
 
 Status flow: Not started → In progress → In Review → Done
-Officers update this. The agent reads it on Wed and Fri.
+Officers update this. The agent reads it daily Tue–Thu and again
+on Fri.
 
 ### Meeting Log (shared)
 Fields: Date · Meeting Type · Raw Notes · Summary ·
@@ -89,13 +91,19 @@ and syncs context tags back to the charter.
 
 ## The agent workflows
 
-| File | Trigger | What it does |
-|---|---|---|
-| `monday_allocation.md` | Mon 8am | Reads charter + profiles, drafts assignments, sends to Telegram for approval |
-| `wednesday_checkin.md` | Wed 2pm | Flags tasks with no update in 48h, posts to Notion |
-| `friday_refinement.md` | Fri 6pm | Reads outcomes, proposes profile updates to Telegram |
+The cron just wakes the agent with a one-line ping. The actual
+routing logic lives in `workspace/HEARTBEAT.md` (which day is it?)
+and `workspace/AGENTS.md` (full rhythm + formats). This keeps the
+scheduler dumb and the agent's behaviour version-controlled.
 
-All three prompts are in `/setup/`. Copy-paste into OpenClaw.
+| Trigger (cron) | Wake message | What the agent does |
+|---|---|---|
+| Mon–Thu 9am AEST | `Check the HEARTBEAT.md and run your scheduled tasks for today.` | **Mon:** drafts the 6-way allocation, sends to Telegram for approval. **Tue/Wed/Thu:** reads Task Tracker, sends daily status summary. |
+| Fri 4pm AEST | `Run the Friday calibration report.` | Compiles on-time + quality, proposes profile updates to Telegram. |
+
+The cron config template lives at `setup/cron_jobs.example.json` —
+drop it into `~/.openclaw/cron/jobs.json` and replace the
+Telegram placeholders.
 
 ---
 
@@ -151,9 +159,11 @@ On-time rate starts at 100. Refines from week 1.
 One row per deliverable. Required Skills must match
 Officer Profiles Skills exactly.
 
-**4. Add the three prompts to OpenClaw**
-Copy from `/setup/`. Set Telegram bot token.
-Configure Notion MCP with your database IDs.
+**4. Wire up OpenClaw**
+Copy `setup/cron_jobs.example.json` into `~/.openclaw/cron/jobs.json`,
+fill in your Telegram account ID + chat ID, and configure the
+Notion MCP with your database IDs. The agent's behaviour comes
+from `workspace/*.md` — no per-day prompt files needed.
 
 **5. Approve the first Monday allocation**
 Nujie sends a draft to Telegram. Review, adjust, confirm.
@@ -165,8 +175,9 @@ Nothing goes to the team until you do.
 
 **Larger organisations** — one agent per portfolio (projects,
 events, media, sponsorships), each with its own database slice
-and Mon/Wed/Fri rhythm. An orchestrating agent above them
-aggregates to leadership via Telegram.
+and weekly rhythm (Mon allocation + daily checks + Fri report).
+An orchestrating agent above them aggregates to leadership via
+Telegram.
 
 **Historical data** — MCP connections to Google Drive or other
 storage let the agent reference past project outcomes when
@@ -187,15 +198,14 @@ nujie/
 ├── README.md
 │
 ├── setup/
-│   ├── monday_allocation.md
-│   ├── wednesday_checkin.md
-│   ├── friday_refinement.md
-│   └── notion_schema.md
+│   └── cron_jobs.example.json
 │
 ├── workspace/
-│   ├── IDENTITY.md
 │   ├── AGENTS.md
-│   └── SOUL.md
+│   ├── HEARTBEAT.md
+│   ├── IDENTITY.md
+│   ├── SOUL.md
+│   └── TOOLS.md
 │
 └── notion-template/
     └── README.md

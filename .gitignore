@@ -1,0 +1,7 @@
+# macOS
+.DS_Store
+
+# Secrets
+.env
+.env.local
+.env.*.local
