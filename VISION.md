@@ -1,4 +1,3 @@
-# VISION.md
 ## The Design Thinking Behind Nujie
 
 This document is not a how-to guide. It is the full design thesis 
