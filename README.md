@@ -9,7 +9,7 @@ Nujie is an autonomous coordination agent that handles that layer
 so you don't have to. You set the structure once. It runs from there.
 
 Built inside a student consulting club at the University of Melbourne.
-Named in loving memory of Anuj Sharma, VP of Strategy at MINT. (Thriving ans still very much alive)
+Named in loving memory of Anuj Sharma, VP of Strategy at MINT. (Thriving and still very much alive)
 
 
 ---
