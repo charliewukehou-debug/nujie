@@ -180,7 +180,7 @@ trivial to see what the agent actually did, when, and why.
 ## Quickstart
 
 **1. Duplicate the Notion template**
-→ [Template link — coming soon]
+→ [Duplicate the template](https://water-cayenne-172.notion.site/Nujie-Template-3595f817815c81ab9361d9041724621f)
 
 **2. Fill in Officer Profiles**
 Seed data: skills, work style, bandwidth estimate.
