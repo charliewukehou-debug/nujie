@@ -22,8 +22,10 @@ Nujie runs on three layers:
 Notion, accessible via MCP.
 
 **Agentic layer** — runs on a fixed weekly schedule via OpenClaw:
-allocation on Monday, daily check-ins Tue–Thu, weekly report on
-Friday. Reads the database, drafts actions, surfaces decisions.
+allocation on Monday, daily check-ins Tue/Thu, meeting digest +
+daily check on Wednesday, weekly report on Friday. Reads the
+database, drafts actions, surfaces decisions, and writes an
+audit trail of everything it does.
 
 **Human layer** — where all decisions live. The agent drafts.
 You confirm. Nothing reaches the team without sign-off.
@@ -109,6 +111,26 @@ Telegram placeholders.
 
 ---
 
+## Skills
+
+The core weekly rhythm (Mon allocation, Tue/Thu daily check, Fri
+report) is encoded directly in `workspace/AGENTS.md` and
+`workspace/HEARTBEAT.md`. Auxiliary capabilities live as
+discoverable skills under `workspace/skills/`:
+
+| Skill | When it runs | What it does |
+|---|---|---|
+| `meeting-digest` | Wed 9am | Reads Meeting Log entries marked Done for the current ISO week, summarises each, flags any signals that should change next Monday's allocation, and appends a dated entry to the Learning Log. |
+| `weekly-dashboard` | Mon / Wed / Fri | Refreshes the Command Centre Weekly Dashboard sub-page — officer status table, at-risk flags, decisions needed, OpenClaw actions log. |
+| `learning-log-writer` | On demand | Centralised appender for the Learning Log — officer observations, allocation pattern notes, client context updates, profile-update proposals, meeting digests. The only way Nujie writes to the Learning Log. |
+| `agent-log` | End of every run | Audit trail writer. Every workflow calls `log_execution` on success or `log_error` on failure. Errors also send a Telegram alert with a pointer to the Error log. |
+
+Each skill is a single `SKILL.md` file with frontmatter, a short
+description, and explicit format examples. Skills are auto-discovered
+by the agent — no registration required.
+
+---
+
 ## Allocation logic
 
 Default: split every deliverable into equal lanes — one per
@@ -135,6 +157,13 @@ you doing anything.
 The agent also improves over time. Every submission writes back
 into the profile layer via the Learning Log. Profiles update
 with PL confirmation. The allocations compound.
+
+Every action the agent takes is logged. The Wednesday meeting
+digest closes the loop between what was discussed and what the
+allocation should look like the following Monday — surfacing
+exam clashes, scope shifts, and capacity changes before they
+become problems. The audit trail in the Agent Log makes it
+trivial to see what the agent actually did, when, and why.
 
 ---
 
@@ -165,7 +194,9 @@ Officer Profiles Skills exactly.
 Copy `setup/cron_jobs.example.json` into `~/.openclaw/cron/jobs.json`,
 fill in your Telegram account ID + chat ID, and configure the
 Notion MCP with your database IDs. The agent's behaviour comes
-from `workspace/*.md` — no per-day prompt files needed.
+from `workspace/AGENTS.md` + `workspace/HEARTBEAT.md` plus
+auto-discovered skills in `workspace/skills/` — no per-day
+prompt files needed.
 
 **5. Approve the first Monday allocation**
 Nujie sends a draft to Telegram. Review, adjust, confirm.
