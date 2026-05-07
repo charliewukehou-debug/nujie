@@ -98,8 +98,10 @@ scheduler dumb and the agent's behaviour version-controlled.
 
 | Trigger (cron) | Wake message | What the agent does |
 |---|---|---|
-| Mon–Thu 9am AEST | `Check the HEARTBEAT.md and run your scheduled tasks for today.` | **Mon:** drafts the 6-way allocation, sends to Telegram for approval. **Tue/Wed/Thu:** reads Task Tracker, sends daily status summary. |
-| Fri 4pm AEST | `Run the Friday calibration report.` | Compiles on-time + quality, proposes profile updates to Telegram. |
+| Mon–Thu 9am AEST | `Check the HEARTBEAT.md and run your scheduled tasks for today.` | **Mon:** drafts the 6-way allocation, sends to Telegram for approval, then refreshes the Weekly Dashboard. **Tue/Thu:** reads Task Tracker, sends daily status summary. **Wed:** summarises this week's Meeting Log entries, flags any allocation impacts for next Monday, then runs the daily check. |
+| Fri 4pm AEST | `Run the Friday calibration report.` | Compiles on-time + quality, proposes profile updates to the Learning Log, sends report to Telegram, refreshes the Weekly Dashboard. |
+
+Every run logs an Execution row to the Agent Log; failures append to the Error Log and send a Telegram alert.
 
 The cron config template lives at `setup/cron_jobs.example.json` —
 drop it into `~/.openclaw/cron/jobs.json` and replace the
@@ -206,7 +208,12 @@ nujie/
 │   ├── HEARTBEAT.md
 │   ├── IDENTITY.md
 │   ├── SOUL.md
-│   └── TOOLS.md
+│   ├── TOOLS.md
+│   └── skills/
+│       ├── meeting-digest/      ← Wed digest of Meeting Log + allocation flags
+│       ├── agent-log/           ← audit trail writer (Execution + Error logs)
+│       ├── weekly-dashboard/    ← Mon/Wed/Fri refreshes of the dashboard page
+│       └── learning-log-writer/ ← centralised Learning Log appender
 │
 └── notion-template/
     └── README.md

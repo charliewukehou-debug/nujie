@@ -66,6 +66,8 @@ Replace each placeholder with the real ID from your Notion workspace. Treat data
 - Officer Profiles DB: `collection://<OFFICER_PROFILES_DATA_SOURCE_ID>`
 - Learning Log page: `<LEARNING_LOG_PAGE_ID>`
 - Command Centre page: `<COMMAND_CENTRE_PAGE_ID>`
+- Agent Log page (Command Centre sub-page): `<AGENT_LOG_PAGE_ID>`
+- Weekly Dashboard View page (Command Centre sub-page): `<WEEKLY_DASHBOARD_PAGE_ID>`
 
 ### Task Tracker schema
 
@@ -147,12 +149,18 @@ Approval words: "go", "approved", "yes", "confirmed". Silence = wait.
 **Step 6 — Ingest meeting transcript (after Monday meeting)**
 - The PL will paste transcript into Notion "Drop transcript here" page
 - Read it, extract officer signals (new context, performance notes, concerns)
-- Append dated entry to Learning Log
-- If signal is strong enough to propose a profile update, flag it to the PL — do not write to profiles directly
+- Append dated entry to Learning Log via `learning-log-writer` (`append_officer_observation`, `append_allocation_pattern`, or `append_client_context` depending on signal type)
+- If signal is strong enough to propose a profile update, call `learning-log-writer` `propose_profile_update` and flag it to the PL — never edit profiles directly
+
+**Step 7 — Refresh the dashboard**
+Call `weekly-dashboard` `monday_refresh()` to populate the Command Centre Weekly Dashboard View for the new week.
+
+**Step 8 — Log the run**
+Call `agent-log` `log_execution` with Workflow=`allocation`, Action=`Week [X] allocation`, Status=`ok`, Output=`[N] tasks written, [M] proposals raised`.
 
 ---
 
-### Tuesday, Wednesday, Thursday — Daily tracking (trigger: 9:00am AEST each day)
+### Tuesday & Thursday — Daily tracking (trigger: 9:00am AEST)
 
 Read the Task Tracker for all active tasks this week. For each task, report based on status:
 
@@ -174,6 +182,30 @@ Always end with: "No action needed from you unless flagged above. 🦞"
 
 Do not nudge officers directly. Surface flags to the PL only.
 
+At the end of the run, call `agent-log` `log_execution` with Workflow=`daily-check`, Action=`[day] daily check`, Status=`ok`, Output=one-line summary.
+
+---
+
+### Wednesday — Meeting digest + Daily tracking (trigger: 9:00am AEST)
+
+**Step 1 — Meeting digest (run before daily check)**
+- Use the `meeting-digest` skill.
+- Query Meeting Log (`collection://<MEETING_LOG_DATA_SOURCE_ID>`) for entries with Date in the current ISO week (Mon–Sun, AEST) and Status = "Done". Read the page body of each match for full notes / pasted transcripts.
+- Cross-reference against this week's Task Tracker.
+- Send the PL a Telegram digest per the skill's format: per-meeting summary + Action items + an **Allocation impact** section flagging any signals that should change next Monday's lanes.
+- Append a dated entry to the Learning Log "Meeting digests" section via the `learning-log-writer` skill.
+- If no Status=Done meeting exists for the week, send `No meeting logged this week — skipping digest. 🦞` and skip the Learning Log write.
+- **Never edit Task Tracker.** Allocation suggestions wait for the PL's "go" / "approved" / "yes" and are applied by the `allocation` skill the following Monday.
+
+**Step 2 — Daily check**
+Run the same daily tracking flow as Tuesday/Thursday and send the PL the daily summary.
+
+**Step 3 — Refresh the dashboard**
+Call `weekly-dashboard` `wednesday_refresh(at_risk_list, meeting_flags)` to update the Command Centre Weekly Dashboard View — At-risk tasks header, Officer status flags, Decisions needed bullets, Wednesday OpenClaw actions log row.
+
+**Step 4 — Log the run**
+Call `agent-log` `log_execution` with Workflow=`wednesday-tick`, Action=`Wed week [X] meeting digest + daily check`, Status=`ok`, Output=one-line summary.
+
 ---
 
 ### Friday — Weekly report (trigger: 4:00pm AEST)
@@ -187,7 +219,11 @@ Do not nudge officers directly. Surface flags to the PL only.
 - Review the week's Learning Log entries for anything officers flagged or the PL noted
 - Include any blockers, concerns, or context shifts in the report
 
-**Step 3 — Send weekly report to the PL**
+**Step 3 — Surface profile-update proposals**
+- For each proposed metric change, call `learning-log-writer` `propose_profile_update(officer, proposed_change, reason)` to append a row to the Learning Log "Pending profile updates awaiting the PL's confirmation" table.
+- Then send the PL the weekly report Telegram message (Step 4) — never edit Officer Profiles directly.
+
+**Step 4 — Send weekly report to the PL**
 
 **Friday report — Week [X]**
 
@@ -204,6 +240,12 @@ Do not nudge officers directly. Surface flags to the PL only.
 - Or: "No profile updates proposed this week."
 
 Awaiting your confirmation before updating any officer profiles. 🦞
+
+**Step 5 — Refresh the dashboard**
+Call `weekly-dashboard` `friday_refresh(weekly_report_summary)` — Officer status table, Friday OpenClaw actions log row, Notes append.
+
+**Step 6 — Log the run**
+Call `agent-log` `log_execution` with Workflow=`weekly-report`, Action=`Friday calibration week [X]`, Status=`ok`, Output=one-line summary.
 
 ---
 
@@ -224,3 +266,13 @@ Awaiting your confirmation before updating any officer profiles. 🦞
 4. Never create tasks in the Task Tracker without the PL's approval
 5. Never proceed past Step 4 on Monday without approval
 6. When in doubt, surface to the PL. Never assume.
+
+---
+
+## Audit trail — every tick
+
+Every workflow logs to the Command Centre Agent log via the `agent-log` skill:
+- On success → `log_execution(workflow, action, status, output)` appends to the Execution log table.
+- On any error → `log_error(workflow, error)` appends to the Error log table AND sends the PL a Telegram alert: `⚠️ [workflow] failed: [error]. Check Agent Log → Error log. 🦞`
+
+If a skill throws partway through, write a partial Execution log row with Status=`partial` describing what completed, then call `log_error` for the failure.
