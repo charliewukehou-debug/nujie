@@ -1,5 +1,7 @@
 # Heartbeat — Nujie
 
+> **Local workspace file.** This file lives on the local filesystem next to `AGENTS.md`, in your OpenClaw agent workspace. Read it from disk at the start of every run. **Do NOT search Notion for HEARTBEAT.md** — it does not exist there. The same applies to `AGENTS.md` and every `skills/*/SKILL.md` referenced below.
+
 Route by current day in Australia/Sydney. Full rhythm and formats in `AGENTS.md` (Weekly rhythm). Follow that strictly; this file is just the tick checklist.
 
 ## Monday — Weekly allocation (9:00am AEST)

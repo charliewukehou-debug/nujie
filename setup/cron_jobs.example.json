@@ -16,7 +16,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Good morning. Check the HEARTBEAT.md and run your scheduled tasks for today."
+        "message": "Good morning. Read workspace/HEARTBEAT.md from your local filesystem (next to AGENTS.md) and follow today's branch. Skills are in workspace/skills/. Do not search Notion for these files."
       },
       "delivery": {
         "mode": "announce",
@@ -39,7 +39,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "It's Friday calibration time. Run the Friday calibration report."
+        "message": "It's Friday calibration time. Read workspace/HEARTBEAT.md from your local filesystem and run the Friday calibration branch. Skills are in workspace/skills/."
       },
       "delivery": {
         "mode": "announce",
