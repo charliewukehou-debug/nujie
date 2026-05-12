@@ -113,13 +113,15 @@ Telegram placeholders.
 
 ## Skills
 
-The core weekly rhythm (Mon allocation, Tue/Thu daily check, Fri
-report) is encoded directly in `workspace/AGENTS.md` and
-`workspace/HEARTBEAT.md`. Auxiliary capabilities live as
+The day-by-day routing lives in `workspace/HEARTBEAT.md` and the
+full rhythm + format specs live in `workspace/AGENTS.md`. The
+concrete operations each tick performs are encapsulated as
 discoverable skills under `workspace/skills/`:
 
 | Skill | When it runs | What it does |
 |---|---|---|
+| `allocation` | Mon 9am | Six-way split with per-person rules (stretch / limited-bandwidth / low-reliability / visual-only). Drafts the week's allocation, sends to the PL for approval, then writes tasks to Notion only after explicit "go". |
+| `weekly-report` | Wed 9am + Fri 4pm | Wed: per-officer status table. Fri: calibration with on-time %, quality scores, rolling averages, and proposed profile updates. Signal-strength rules guard any profile metric changes. |
 | `meeting-digest` | Wed 9am | Reads Meeting Log entries marked Done for the current ISO week, summarises each, flags any signals that should change next Monday's allocation, and appends a dated entry to the Learning Log. |
 | `weekly-dashboard` | Mon / Wed / Fri | Refreshes the Command Centre Weekly Dashboard sub-page — officer status table, at-risk flags, decisions needed, OpenClaw actions log. |
 | `learning-log-writer` | On demand | Centralised appender for the Learning Log — officer observations, allocation pattern notes, client context updates, profile-update proposals, meeting digests. The only way Nujie writes to the Learning Log. |
@@ -241,10 +243,12 @@ nujie/
 │   ├── SOUL.md
 │   ├── TOOLS.md
 │   └── skills/
+│       ├── allocation/          ← Mon 6-way split with per-person rules + approval gate
+│       ├── weekly-report/       ← Wed status + Fri calibration with profile-update proposals
 │       ├── meeting-digest/      ← Wed digest of Meeting Log + allocation flags
-│       ├── agent-log/           ← audit trail writer (Execution + Error logs)
 │       ├── weekly-dashboard/    ← Mon/Wed/Fri refreshes of the dashboard page
-│       └── learning-log-writer/ ← centralised Learning Log appender
+│       ├── learning-log-writer/ ← centralised Learning Log appender
+│       └── agent-log/           ← audit trail writer (Execution + Error logs)
 │
 └── notion-template/
     └── README.md

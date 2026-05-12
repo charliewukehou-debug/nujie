@@ -194,7 +194,7 @@ this. Transcripts feed the meeting log automatically.
 The agent reads the log and updates the charter's context 
 tags without anyone summarising manually.
 
-As MCP connections expand to Canva, Figma, and Google Docs, 
+As MCP integrations get added for Canva, Figma, and Google Docs, 
 task status updates become passive. The agent detects that 
 a file was opened and marks the task in progress. It detects 
 that a document was finalised and marks it submitted. The 
