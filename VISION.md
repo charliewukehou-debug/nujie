@@ -119,12 +119,12 @@ profiles, drafts task assignments. Tuesday through Thursday,
 reports to the project leader. Friday: reads submission 
 outcomes, proposes profile updates based on what it observed.
 
-The agent connects to external tools through MCP — a 
-standardised protocol that lets it read from and write to 
-Notion, send summaries to Telegram, query calendars, pull 
-meeting transcripts. Each connection is a declared tool. 
-Adding a new integration never requires rebuilding the 
-pipeline.
+The agent connects to external tools through dedicated APIs — 
+the Notion API for database reads and writes, the Telegram 
+Bot API for summaries to the project leader, with additional 
+connectors (calendars, meeting transcripts) slotted in as the 
+system grows. Each connection is a declared tool. Adding a new 
+integration never requires rebuilding the pipeline.
 
 Critically, the agent improves over time. Every submission 
 writes back into the profile layer. Every week the agent 

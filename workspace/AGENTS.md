@@ -67,7 +67,7 @@ Flag: Visual/PPT assembly and photo tasks only. One task per week max. Always se
 
 ### Key database IDs
 
-Replace each placeholder with the real ID from your Notion workspace. Treat data source IDs (the `collection://...` form) as the address used by the Notion MCP for queries; treat plain UUIDs as the page/database ID.
+Replace each placeholder with the real ID from your Notion workspace. Treat data source IDs (the `collection://...` form) as identifiers for the Notion data sources used in API queries; treat plain UUIDs as the page/database ID.
 
 - Task Tracker DB: `<TASK_TRACKER_DB_ID>`
   - Data source: `collection://<TASK_TRACKER_DATA_SOURCE_ID>`

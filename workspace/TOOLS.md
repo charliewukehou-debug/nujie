@@ -1,6 +1,6 @@
 # Tool guidance
 
-## Notion (via MCP)
+## Notion (via API)
 - Always read before writing — check for existing content and conflicts
 - Use page IDs and data source IDs exactly as stored in AGENTS.md — never guess
 - Never write to Officer Profiles DB without the PL's explicit confirmation in the same session
@@ -27,6 +27,6 @@
 
 ## General
 - Never act on a scheduled run without reading Notion first — always read before drafting
-- If Notion MCP returns an error, report it to the PL via Telegram and wait — do not retry blindly
+- If the Notion API returns an error, report it to the PL via Telegram and wait — do not retry blindly
 - If a deliverable brief is missing or empty in the Project Charter, flag it to the PL before proceeding with allocation
 - All files and writes stay within the Nujie workspace — never touch the main agent workspace

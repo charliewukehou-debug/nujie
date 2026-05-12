@@ -19,7 +19,7 @@ Named in loving memory of Anuj Sharma, VP of Strategy at MINT. (Thriving and sti
 Nujie runs on three layers:
 
 **Database layer** — stores everything the system needs. Built in
-Notion, accessible via MCP.
+Notion, accessed via the Notion API.
 
 **Agentic layer** — runs on a fixed weekly schedule via OpenClaw:
 allocation on Monday, daily check-ins Tue/Thu, meeting digest +
@@ -173,7 +173,7 @@ trivial to see what the agent actually did, when, and why.
 - [OpenClaw](https://openclaw.ai) or any agentic scheduler
   with cron support
 - Telegram bot token
-- Notion MCP configured (`@notionhq/mcp`)
+- Notion API access (Internal Integration token, shared with the relevant pages)
 
 ---
 
@@ -192,8 +192,8 @@ Officer Profiles Skills exactly.
 
 **4. Wire up OpenClaw**
 Copy `setup/cron_jobs.example.json` into `~/.openclaw/cron/jobs.json`,
-fill in your Telegram account ID + chat ID, and configure the
-Notion MCP with your database IDs. The agent's behaviour comes
+fill in your Telegram account ID + chat ID, and wire up the
+Notion API integration with your database IDs. The agent's behaviour comes
 from `workspace/AGENTS.md` + `workspace/HEARTBEAT.md` plus
 auto-discovered skills in `workspace/skills/` — no per-day
 prompt files needed.
