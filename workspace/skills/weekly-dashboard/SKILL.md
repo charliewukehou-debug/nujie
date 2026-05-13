@@ -50,11 +50,13 @@ Called by `allocation` after the PL approves the week's allocation.
 ## Operation: `wednesday_refresh(at_risk_list, meeting_flags)`
 Called after `meeting-digest` + Wednesday daily task check.
 
-1. Update **At-risk tasks** header line: comma-separated officer labels whose tasks are 🔴 Not started or 🟡 No update >48hrs. If none: `—`.
-2. Update each row in **Officer status** — Status column flips to 🟢 / 🟡 / 🔴 using the same classification rules as `weekly-report` Wednesday format:
-   - `✅ On track` — task updated in Notion in last 48hrs
-   - `🟡 No update` — no Notion activity in 48hrs
-   - `🔴 Not started` — task not opened since assignment
+1. Update **At-risk tasks** header line: comma-separated officer labels whose Task Tracker `Status` is `Not started`. If none: `—`.
+2. Update each row in **Officer status** using the same Task Tracker `Status` flow as `HEARTBEAT.md`:
+   - `🔴 Not started` — flag to the PL immediately
+   - `🟡 In progress` — report progress, no further action needed
+   - `🔵 In Review` — prompt the PL to review
+   - `✅ Done` — report done
+   Do not infer progress from Notion activity timestamps or whether a task was opened.
 3. Append bullets to **Decisions needed** for any calls the PL must make (allocation impact flags from meeting-digest, at-risk escalations, etc.).
 4. **OpenClaw actions log** — Wednesday row:
    - Action: `At-risk flag + meeting digest`

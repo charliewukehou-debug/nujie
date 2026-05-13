@@ -151,7 +151,7 @@ The human layer is not a limitation. It is the design.
 ## The fairness dimension
 
 One consequence of this architecture that I did not fully 
-anticipate: it removes subjectivity from task allocation.
+anticipate: it makes task allocation easier to inspect.
 
 In most teams, who gets which task is a function of who the 
 manager likes, who is most visible, who asked most recently, 
@@ -160,21 +160,20 @@ by default — even when the manager is actively trying to be
 fair. Blind spots are structural. They don't go away with 
 good intentions.
 
-Nujie allocates based entirely on metrics calculated from 
-observed outcomes. The metrics don't know who is friends 
-with the manager. They don't know who spoke up in the last 
-meeting. They know who submitted on time, who delivered 
-quality work, who has bandwidth this week.
+Nujie does not remove judgment from allocation. It makes the
+judgment more explicit. Instead of relying only on memory or
+impression, the project leader can see the signals that shaped
+the allocation: who submitted on time, who delivered strong
+work, who has bandwidth this week, and where the system is
+still uncertain.
 
-The system is a meritocracy in the most literal sense — 
-because the scores are calculated, not felt.
-
-The incentive structure this creates is subtle but important. 
-Officers don't need to manage perception. They don't need to 
-be visible or vocal or politically savvy. They just do the 
-work. Good performance naturally earns better-suited tasks 
-over time. The system compounds in their favour without 
-anyone advocating for them — including the manager.
+The incentive structure this creates is subtle but important.
+Officers should not have to manage perception as the main way
+their work is recognised. Good performance should leave a trail
+that can be noticed later, even when someone was quiet in the
+meeting or not top of mind that week. The system does not make
+allocation perfectly objective. It makes the reasoning easier
+to challenge, correct, and improve.
 
 Officer profiles are private. Team members never see their 
 own scores or each other's. From their perspective they 
@@ -363,8 +362,10 @@ It is about saving time from what was never worth doing in
 the first place — and redirecting that reclaimed capacity 
 toward the problems that actually require human judgment.
 
-Nujie is not finished. It is not even close. But I hope it is built on a right principle: that AI's job is not to think for you, but to
-make sure that when you do think, it is about something worth thinking about.
+Nujie is not finished. It is not even close. But I hope it is built
+on the right principle: AI's job is not to think for you, but to
+make sure that when you do think, it is about something worth
+thinking about.
 
 ---
 

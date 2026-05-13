@@ -13,17 +13,22 @@ Send to the PL via Telegram in this exact format:
 
 | Officer | Task | Status | Flag |
 |---------|------|--------|------|
-| Co-PL 1 | [task] | ✅ On track | — |
-| Co-PL 2 | [task] | ✅ On track | — |
-| Officer A | [task] | ✅ On track | — |
-| Officer B | [task] | 🟡 No update | At-risk |
-| Officer C | [task] | 🟡 No update | At-risk |
-| Officer D | [task] | 🔴 Not started | Flag |
+| Co-PL 1 | [task] | ✅ Done | — |
+| Co-PL 2 | [task] | 🔵 In Review | Review requested |
+| Officer A | [task] | 🟡 In progress | No action needed |
+| Officer B | [task] | 🔴 Not started | Flag |
+| Officer C | [task] | 🟡 In progress | No action needed |
+| Officer D | [task] | ✅ Done | — |
 
 Status key:
-- ✅ On track — task updated in Notion in last 48hrs
-- 🟡 No update — no Notion activity in 48hrs
-- 🔴 Not started — task not opened since assignment
+- 🔴 Not started — flag to the PL immediately
+- 🟡 In progress — report progress, no further action needed
+- 🔵 In Review — prompt the PL to review
+- ✅ Done — report done
+
+Wednesday follows the same Task Tracker `Status` flow as `HEARTBEAT.md`.
+Do not infer progress from Notion activity timestamps or whether a task
+was opened.
 
 Awaiting your direction before nudging any officer. 🦞
 
