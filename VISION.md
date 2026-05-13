@@ -363,7 +363,8 @@ It is about saving time from what was never worth doing in
 the first place — and redirecting that reclaimed capacity 
 toward the problems that actually require human judgment.
 
-Nujie is not finished. It is not even close. But I hope  it is built on the right principle: that AI's job is not to think for you but to make that when you do think, it is about something worth thinking about.
+Nujie is not finished. It is not even close. But I hope it is built on a right principle: that AI's job is not to think for you, but to
+make sure that when you do think, it is about something worth thinking about.
 
 ---
 
